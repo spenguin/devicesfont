@@ -1,0 +1,245 @@
+/**
+    Global styles
+*/
+html {
+  padding: 0;
+  margin: 0;
+}
+
+/**
+    Colours
+*/
+/**
+	Fonts styles
+*/
+@font-face {
+  font-family: "Paralucent Medium";
+  src: url("fonts/Paralucent-Medium.eot");
+  src: url("fonts/Paralucent-Medium.eot?#iefix") format("embedded-opentype"), url("fonts/Paralucent-Medium.woff") format("woff"), url("fonts/Paralucent-Medium.ttf") format("truetype"), url("fonts/Paralucent-Medium.svg#webfont") format("svg");
+}
+body {
+  font-size: 87.5%;
+  font-family: "Paralucent Medium", serif;
+  line-height: 1.8rem;
+  color: #333333;
+}
+
+/**
+	Grid values
+*/
+/**
+	Mixins
+*/
+/* Usage - Stick into the top of your SCSS sheet and @include where needed for cross browser transitions. 
+
+.class {
+		 @include transition($transition-property, $transition-time, $method);
+}
+
+$transition-property = the property you want to transition
+$transition-time = seconds you want the transition to last
+$method = how you want it to transition - e.g. ease-in-out
+
+Usage example;
+
+-------------
+
+.item {
+		@include transition(padding, 1s, ease-in-out);
+}
+
+-------------
+
+*/
+/**
+	Calculate the width of <main> based on the aside and gutter widths
+*/
+/**
+	Set of mixins from https://gist.github.com/garyharan/957284
+*/
+/**
+    Elements accumulated
+*/
+/**
+    Structure styles
+*/
+body {
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+/** style for multi-element presentation */
+.work_type-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.work_type-list-entry {
+  width: 15%;
+  height: 15%;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border: 1px solid grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  min-height: 155px;
+  min-width: 155px;
+}
+
+/*
+@import "partials/objects.grid";
+@import "partials/objects.wrappers";*/
+/*
+@import "partials/elements.headings";
+@import "partials/elements.text";
+*/
+/**
+    Components accumulated
+*/
+/**
+    Structure styles
+*/
+html {
+  scroll-behavior: smooth;
+}
+
+nav {
+  background-color: #cec7bd;
+}
+nav .container {
+  display: flex;
+  justify-content: space-between;
+}
+nav ul {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+nav ul.main {
+  width: 25%;
+}
+nav ul.secondary {
+  width: 40%;
+}
+nav ul li a {
+  color: #333333;
+  text-decoration: none;
+  text-shadow: 1px 1px black;
+}
+nav ul li a:hover {
+  color: white;
+}
+
+/*@import "components/component.articles";
+@import "components/component.footer";
+@import "components/component.forms";*/
+/** Modal code */
+/* Normal styles for the modal */
+/* Normal styles for the modal */
+.modal-popup {
+  left: 50%;
+  margin: -240px 0 0 -25%;
+  opacity: 0;
+  position: absolute;
+  top: -50%;
+  visibility: hidden;
+  width: 50%;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+}
+
+/* Make the modal appear when targeted */
+.modal-popup:target {
+  opacity: 1;
+  top: 50%;
+  visibility: visible;
+}
+
+.modal-popup .header, .modal-popup .footer {
+  border-bottom: 1px solid #e7e7e7;
+  border-radius: 5px 5px 0 0;
+}
+
+.modal-popup .footer {
+  border: none;
+  border-top: 1px solid #e7e7e7;
+  border-radius: 0 0 5px 5px;
+}
+
+.modal-popup h2 {
+  margin: 0;
+}
+
+.modal-popup .btn {
+  float: right;
+}
+
+.modal-popup .copy, .modal-popup.header, .modal-popup .footer {
+  padding: 15px;
+}
+
+.modal-content {
+  background: #f7f7f7;
+  position: relative;
+  z-index: 20;
+  border-radius: 5px;
+}
+
+.modal-popup .copy {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.modal-popup .overlay {
+  background-color: #000;
+  background: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.modal-content h2 {
+  font-size: 1.3rem;
+}
+
+/*
+@import "partials/components.header";
+@import "partials/components.footer";
+@import "partials/components.site-nav";
+@import "partials/components.articles";
+@import "partials/components.buttons";
+@import "partials/components.forms";
+
+*/
+
+/*# sourceMappingURL=style.css.map */

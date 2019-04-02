@@ -1,0 +1,85 @@
+/**
+ *  Forms styles
+ */
+
+.wpcf7 {
+    width: 100%;
+    margin: 0 auto;
+    input {
+        height: 1.5rem;
+        font-size: 1.3rem;
+        width: 100%;
+        &.wpcf7-submit {
+            height: 2.0rem;
+            font-size: 1.3rem;
+            color: $SFGrey;
+            background-color: $SFPink;
+            border: 0;
+            width: auto;
+        }
+    }
+    textarea {
+        width: 63%;
+    }
+}
+
+/* 
+#contactform2 {
+    .wdform_column {
+        padding-right: 0!important;
+        border-spacing: 0;
+    }
+    .wdform-label {
+        color: $SFPink;
+        font-family: $bodyFamily;
+    }
+    .mini_label {
+        color: $SFPink;
+        font-family: $bodyFamily;
+        font-size: 1.0rem;
+    }
+}
+/*
+#mc_embed_signup {
+    color: $SPPDarkBlue;
+}
+.landing-page-content {
+    width: 50%;
+    margin: 0 auto;
+    .signup {
+        p {
+            font-style: italic;
+            font-size: 1.3rem;
+            line-height: 2.5rem;
+        }
+        .indicates-required {
+            text-align: right;
+            font-size: 1.0rem;
+            font-style: italic;
+            font-weight: bold;
+        }
+        .mc-field-group {
+            position: relative;
+            label {
+                display: block;
+                margin-top: 20px;
+                span{
+                    position: absolute;
+                    top: 33px;
+                    right: 8px;
+                    color: #ff0000
+                }
+            }
+            input {
+                display: block;
+                width: 100%;
+                padding: 8px 0;
+                text-indent: 2%;  
+            }
+        }
+        input[type="submit"] {
+            background-color: $SPPDarkBlue;
+            border-color: $SPPDarkBlue;
+        }
+    }
+}*/

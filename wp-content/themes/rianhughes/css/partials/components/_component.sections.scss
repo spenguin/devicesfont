@@ -1,0 +1,34 @@
+/**
+    Sections style
+*/
+section {
+    padding: 3% 5%;
+    &.opening {
+        background-color: $SFGrey;
+        @include respond-to( medium-screens )
+        {
+            height: 400px;
+            padding: 0;
+        }  
+        @include respond-to( large-screens )
+        {
+            padding: 3% 10% 0 10%;
+        }               
+    }
+    &.testimonial {
+        background-color: $SFPink;
+    }
+    &.voiceover .vo-wrapper {
+        display: flex;
+        flex-direction: column; //row;
+        flex-wrap: wrap;
+        width: 80%;
+        margin: 0 auto;
+        justify-content: space-between;
+        @include respond-to-above( small-screens )
+        {
+            width: 100%;
+            flex-direction: row;
+        }          
+    }
+}

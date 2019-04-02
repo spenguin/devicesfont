@@ -1,0 +1,14 @@
+/**
+    Header styles
+*/
+header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    @include respond-to-above( xs-screens )
+    {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
