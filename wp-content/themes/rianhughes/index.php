@@ -10,9 +10,23 @@ get_header(); ?>
 
 <div class="container">
     <div class="row">
-        <h1>Main</h1>
-        <p>Main</p>
+    
+    <?php
+		if ( have_posts() ) {
 
+			// Load posts loop.
+			while ( have_posts() ) {
+				the_post();
+				get_template_part( 'templates/partials/content' );
+			}
+
+		} else {
+
+			// If no content, include the "No posts found" template.
+			get_template_part( 'template/partials/content', 'none' );
+
+		}
+		?>
     </div>
 </div>
 <?php get_footer(); ?>

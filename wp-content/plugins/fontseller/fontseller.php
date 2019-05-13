@@ -12,56 +12,29 @@ Text Domain: fontseller
 */
 defined( 'ABSPATH' ) or die( 'Access denied.' );
 
+define( 'FS_CORE', dirname( __FILE__) );
+define( 'FS_INCLUDES', FS_CORE . '/includes/' );
+define( 'FS_TEMPLATES', FS_CORE . '/templates/' );
+$path	= wp_upload_dir();
+define( 'FS_UPLOAD', $path['basedir'] . '/fontseller/' );
 
-// PHP version check first and foremost
-function displayPhpError() 
+
+// Test minimum requirements
+require_once( FS_INCLUDES . 'FontsellerPlugin.php' );
+
+if( !FontsellerPlugin::test() )
 {
-	echo '<section id="fontseller-admin">';
-	echo '<div class="notice error">Your server is running PHP version ' . PHP_VERSION
-	     . ', <br>Fontseller requires at least PHP version 5.6.33 or higher to run.<br><br>'
-	     . 'The <a href="https://wordpress.org/about/requirements/">recommended PHP version '
-	     . 'for Wordpress itself is 7</a> or greater.<br><br>'
-	     . 'While legacy Wordpress support extends to 5.2.4, <strong>Fontseller requires a minimum '
-	     . 'of PHP 5.6.33.</strong> Please be in touch with your webserver provider about upgrading or enabling '
-	     . 'a more modern version of PHP.';
-	echo '</section>';
+	// echo error
 	exit();
 }
+FontsellerPlugin::initialise();
 
-function addMenu() 
-{
-	add_menu_page( 'Fontseller plugin page', 'Fontseller', 'manage_options', 'fontseller', 'displayPhpError', 'dashicons-editor-paragraph' );
-	wp_enqueue_style( 'fontseller_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontseller-admin.css', false, '1.0.0' );
-}
+require_once( FS_INCLUDES . 'FontsellerDatabase.php' );
+require_once( FS_INCLUDES . 'FontsellerCustomPosts.php' );
+require_once( FS_INCLUDES . 'FontsellerAdmin.php' );
+require_once( FS_INCLUDES . 'FontsellerShortcodes.php' );
+require_once( FS_INCLUDES . 'FontsellerPaymentGateways.php' );
 
-if ( version_compare( PHP_VERSION, "5.6.33" ) < 0 ) {
-	add_action( 'admin_menu', 'addMenu' );
-} else {
-    global $wpdb;
-	// PHP version is good, let's go all bells and whistles...
-	require_once( 'FontsellerPlugin.php' );
-
-	// Convenience subclasses instantiated within the FontsellerPlugin class
-	require_once( 'FontsellerDatabase.php' );
-	//require_once( 'FontsellerFormhandler.php' );
-	//require_once( 'FontsellerLayout.php' );
-	//require_once( 'FontsellerHelpers.php' );
-	//require_once( 'FontsellerPagination.php' );
-	//require_once( 'FontsellerMessages.php' );
-	//require_once( 'FontsellerNotifications.php' );
-	//require_once( 'FontsellerOrders.php' );
-	//require_once( 'FontsellerPaymentGateways.php' );
-
-	/*require_once( 'vendor/oyejorge/less.php/lessc.inc.php' );
-	require_once( 'vendor/autoload.php' );*/
-
-	// hook all plugin classes init to when Wordpress is ready
-	$loader 	 = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
-	$twig   	 = new Twig_Environment( $loader );
-	$fontseller  = new FontsellerPlugin( $wpdb, $twig );
-
-	// load translations, then kick off actual Fontseller setup and hooks
-	add_action( 'plugins_loaded', array( $fontseller, 'fontseller_load_text_domain' ) );
-	add_action( 'init', "fontseller_init" );
-	register_activation_hook( __FILE__, array( $fontseller, 'fontseller_activate' ) );
-}
+// Run databases
+FontsellerDatabase::run();
+//FontsellerCustomPosts::run();
