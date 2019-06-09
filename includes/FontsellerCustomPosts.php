@@ -10,6 +10,7 @@ function initialise()
 {
     add_action( 'init', 'create_post_type' );
     add_action( 'init', 'create_custom_taxonomy' );
+    add_action( 'init', 'seedTaxonomies' );
 }
 
 function create_post_type() {
@@ -81,7 +82,7 @@ function create_custom_taxonomy()
         'update_item' => __( 'Update Standard' ),
         'add_new_item' => __( 'Add New Standard' ),
         'new_item_name' => __( 'New Standard Name' ),
-        'menu_name' => __( 'Standard' ),
+        'menu_name' => __( 'Standards' ),
     ); 	
     
     register_taxonomy('standard',array('font'), array(
@@ -93,4 +94,31 @@ function create_custom_taxonomy()
         'rewrite' => array( 'slug' => 'standard' ),
     ));        
    
+}
+
+function seedTaxonomies()
+{
+    $terms  = [
+        'Superior',
+        'Premium',
+        'Deluxe'
+    ];
+    foreach( $terms as $t )
+    {   
+        if( term_exists( $t, 'standard' ) ) continue;
+        wp_insert_term( $t, 'standard' );
+    }
+
+    $terms  = [
+        'Serif',
+        'Sans serif',
+        'Display',
+        'Slab',
+        'Script',
+    ];
+    foreach( $terms as $t )
+    {
+        if( term_exists( $t, 'classification' ) ) continue;
+        wp_insert_term( $t, 'classification' );
+    }
 }

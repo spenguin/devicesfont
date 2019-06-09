@@ -85,7 +85,7 @@ function getSampleFont( $parentId )
 function getFamilyStandard( $id )
 {
     $terms  = get_the_terms( $id, 'variant' );
-    $standards  = ["regular", "premium", "deluxe"];
+    $standards  = ["superior", "premium", "deluxe"];
     foreach( $terms as $t )
     {
         if( in_array( $t->slug, $standards) ) return $t->name;

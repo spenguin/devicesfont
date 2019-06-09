@@ -32,9 +32,10 @@ FontsellerPlugin::initialise();
 
 require_once( FS_INCLUDES . 'FontsellerDatabase.php' );
 require_once( FS_INCLUDES . 'FontsellerCustomPosts.php' );
+require_once( FS_INCLUDES . 'FontsellerUpload.class.php' );
 require_once( FS_INCLUDES . 'FontsellerAdmin.php' );
 require_once( FS_INCLUDES . 'FontsellerShortcodes.php' );
-require_once( FS_INCLUDES . 'FontsellerPaymentGateways.php' );
+//require_once( FS_INCLUDES . 'FontsellerPaymentGateways.php' );
 
 // Run databases
 FontsellerDatabase::run();
