@@ -103,8 +103,19 @@ class FontsellerUpload {
                     ];
                     $fontId = wp_insert_post( $args );
                     add_post_meta( $fontId, 'formats', join( ',', $file['formats'] ) );
+                    foreach( $file['formats'] as $format )
+                    {   
+                        rename( FS_UPLOAD . 'upload/' . $file['title'] . '.' . $format, FS_UPLOAD . 'recorded/' . $file['title'] . '.' . $format ); // Move the file
+                    }
                 }
                 add_post_meta( $this->setId, 'repFont', $_POST['rep'] );
+                
+                // Delete unaccepted fonts
+                $file   = $this->cleanUploadDirectory( TRUE );
+
+
+
+                $message    = "Font Set has been recorded";
                 $step    = 1;
             }
         }
@@ -365,7 +376,7 @@ class FontsellerUpload {
     /**
      * Clean the upload directory
      */
-    function cleanUploadDirectory()
+    function cleanUploadDirectory( $all = FALSE )
     {
         $files  = scandir( FS_UPLOAD . 'upload/' ); 
         $files  = array_diff( $files, ['.', '..'] );
@@ -378,7 +389,15 @@ class FontsellerUpload {
             }
             else
             {
-                $o[]    = $f;
+                if( $all )
+                {
+                    unlink(  FS_UPLOAD . 'upload/' . $f );
+                }
+                else
+                {
+                    $o[]    = $f;
+                }
+                
             }
         }
         return $o;        
