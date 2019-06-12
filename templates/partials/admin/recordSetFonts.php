@@ -4,7 +4,7 @@
  */
 ?>
 <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-    <input type="hidden" name="parentId" value="<?php echo $parentId; ?>" />
+    <input type="hidden" name="parentId" value="<?php echo $this->setId; ?>" />
     <p>These are the font files prepared to be accepted.</p>
     <table class="form-table">
         <thead>

@@ -81,6 +81,7 @@ class FontsellerUpload {
             if( empty( $errors ) )
             {   
                 $files  = $this->organiseFontFiles();
+                $parentId   = $_POST['parentId'];
                 if( empty( $_POST['acceptAll'] ) )
                 {   
                     $acceptedFiles  = array_intersect_key( $files, array_flip( $_POST['accepted'] ) );
@@ -94,7 +95,7 @@ class FontsellerUpload {
                     $args   = [
                         'post_title'    => $file['title'],
                         'post_type'     => 'font',
-                        'post_parent'   => $this->setId,
+                        'post_parent'   => $parentId,
                         'tags_input'    => ['slug' => $slug],
                         'post_status'   => 'publish',
                         'tax_input'     => [
@@ -107,8 +108,8 @@ class FontsellerUpload {
                     {   
                         rename( FS_UPLOAD . 'upload/' . $file['title'] . '.' . $format, FS_UPLOAD . 'recorded/' . $file['title'] . '.' . $format ); // Move the file
                     }
-                }
-                add_post_meta( $this->setId, 'repFont', $_POST['rep'] );
+                } var_dump( $parentId ); var_dump( $_POST['rep'] );
+                add_post_meta( $parentId, 'repFont', $_POST['rep'] );
                 
                 // Delete unaccepted fonts
                 $file   = $this->cleanUploadDirectory( TRUE );

@@ -10,7 +10,7 @@
                     <style>
                         @font-face{ 
                             font-family: "<?php echo $font['title']; ?>";
-                            src: url( "<?php echo FS_FONTS . $font['sampleFont']; ?>") format('woff')
+                            src: url( "C:\wamp64\www\wp_hughes\wp-content\uploads\fontseller\recorded\<?php echo $font['repFont']; ?>" ) format('woff')
                         }
                         .font-list-entry_sample.<?php echo $font['slug']; ?> {
                             font-family: "<?php echo $font['title']; ?>";
