@@ -50,7 +50,7 @@ function getFonts( $parentId = 0 )
     $query   = new WP_Query( $args ); 
     $o       = [];
     if( $query->have_posts() ): while( $query->have_posts() ): $query->the_post(); 
-        $id     = get_the_ID(); 
+        $id     = get_the_ID();  
         //$terms  = get_the_terms( $id, 'variant' );
         $o[$id] = [
             'title' => get_the_title(),
@@ -69,16 +69,16 @@ function getFonts( $parentId = 0 )
  */
 function getRepFont( $id )
 {
-    $repFontStr    = get_post_meta( $id, 'repFont', TRUE );
+    $repFontStr    = get_post_meta( $id, 'repFont', TRUE ); 
     if( !empty( $repFontStr ) )
     {
         $args   = [
             'post_type' => 'font',
-            'slug'      => $repFontStr,
+            'name'      => $repFontStr,
             'numberposts'   => 1
         ];
-        $posts = get_posts( $args );
-        $repFont    = reset( $posts );
+        $posts = get_posts( $args ); 
+        $repFont    = reset( $posts ); 
         $formats    = explode( ',', get_post_meta( $repFont->ID, 'formats', TRUE ) );
         if( in_array( 'woff', $formats ) )
         {
