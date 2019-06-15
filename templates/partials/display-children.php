@@ -1,12 +1,16 @@
 <?php
 /**
  * Display all Fonts of Family
- */ 
+ */ //var_dump( $prices );
 ?>
 <div class="container">
     <div class="row">
-        <h2><?php echo $parent->title; ?></h2>
-        <p><?php count( $fonts ); ?> variants</p>
+        <h1><?php echo $parent->post_title; ?></h1>
+        <form action="<?php echo site_url(); ?>/cart" method="post" class="font-buy-all_form">
+            <p class="variant-count">A <?php echo $standard; ?> font with <?php echo $c = count( $fonts ); ?> variant <?php echo ( 1 == $c ) ? '' : 's'; ?> | &pound;<?php echo number_format( $prices[strtolower( $standard )] * $c, 2);?>
+            <span class="font_buy"><input type="submit" class="button button-primary" name="addToCart" value="Add Font Set to Cart"></p>
+        </form>
+        
     </div>
     <div class="row">
         <div class="font-child-list">
@@ -22,12 +26,20 @@
 
                 </style>
                 <div class="font-child-list-entry">
-                    <h3><?php echo $title; ?></h3>
+                    <p class="details">
+                        <?php echo $title; ?> |
+                        <?php echo 'Formats: ' . $font['formats'] . ' |'; ?>
+                        <?php echo empty( $font['description'] ) ? '' : $font['description'] . ' |'; ?>
+                        &nbsp;&pound;<?php echo number_format( $prices[strtolower( $standard )], 2 ) . ' |'; ?>
+                    </p>
                     <div class="font-child-list-entry_sample <?php echo $font['slug']; ?>">
-                        ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+                        ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890,.;:?!%&{()}*$@
                     </div>
-                    <div class="font-child-list-entry_standard">
-                        <?php //echo $font['standard']; ?>
+                    <div class="font-child-list-entry_buy">
+                        <form action="<?php echo site_url(); ?>/cart" method="post">
+                            <input type="hidden" name="fontId" value="<?php echo $font['id']; ?>" />
+                            <span class="font_buy"><input type="submit" class="button button-primary" name="addToCart" value="Add Font to Cart">
+                        </form>
                     </div>
                 </div>
             <?php endforeach; ?>

@@ -35,8 +35,15 @@ require_once( FS_INCLUDES . 'FontsellerCustomPosts.php' );
 require_once( FS_INCLUDES . 'FontsellerUpload.class.php' );
 require_once( FS_INCLUDES . 'FontsellerAdmin.php' );
 require_once( FS_INCLUDES . 'FontsellerShortcodes.php' );
+require_once( FS_INCLUDES . 'FontsellerPricing.php' );
+require_once( FS_INCLUDES . 'FontsellerPages.php' );
 //require_once( FS_INCLUDES . 'FontsellerPaymentGateways.php' );
 
 // Run databases
 FontsellerDatabase::run();
 //FontsellerCustomPosts::run();
+
+// We'll need Session variables
+if (!session_id()) {
+    session_start();
+}
