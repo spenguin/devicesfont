@@ -8,7 +8,7 @@ createShortcodes();
 function createShortcodes()
 {
    // add_shortcode( 'fontseller-upload', 'createFontsellerUpload' );
-   add_shortcode( 'fontseller-display', 'displayFonts' );
+   add_shortcode( 'fs-display', 'displayFonts' );
    add_shortcode( 'fs-cart', 'displayCart' );
    add_shortcode( 'fs-checkout', 'displayCheckout' );
 }

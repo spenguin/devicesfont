@@ -33,6 +33,18 @@ function create_pages()
         ];
         wp_insert_post( $post_details ); 
     }   
+    $check_page_exist = get_page_by_title( 'Fonts', 'OBJECT', 'page' );
+    if( empty( $check_page_exist ) )
+    {
+        $post_details = [
+            'post_title'    => 'Fonts',
+            'post_content'  => '[fs-display]',
+            'post_status'   => 'publish',
+            'post_author'   => 1,
+            'post_type'     => 'page'
+        ];
+        wp_insert_post( $post_details ); 
+    }     
 
 }
 

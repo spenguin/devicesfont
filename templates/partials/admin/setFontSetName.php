@@ -37,7 +37,7 @@
     </fieldset>
     <fieldset>
         <h3>Web font conversion</h3>
-        <input type="checkbox" name="convert" value="1"> The fonts in this set will need to have WOFF formats generated
+        <input type="checkbox" name="convert" value="1"> The fonts in this set will have WOFF formats automatically generated. Tick this box if you will be providing your own conversions.
     </fieldset>
     <?php if( !empty( $exists ) ): ?>
         <p>Suggested name is similar to names already existing. If this upload is part of an existing Family, either as an addition or a replacement, select the Font Family name from below:</p>

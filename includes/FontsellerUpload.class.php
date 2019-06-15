@@ -37,7 +37,7 @@ class FontsellerUpload {
 
         if( isset( $_POST['subFontName'] ) )
         {  
-            if( !empty( $_POST['convert'] ) )
+            if( empty( $_POST['convert'] ) )
             {   
                 $this->convertFonts();
             }
@@ -309,7 +309,7 @@ class FontsellerUpload {
     function setTerms( $taxonomy )
     {   
         if( !empty( $_POST[$taxonomy] ) )
-        {
+        {   
             wp_set_post_terms( $this->setId, $_POST[$taxonomy], $taxonomy );
         }
     }    
@@ -326,7 +326,7 @@ class FontsellerUpload {
         $o  = [];
         foreach( $terms as $t )
         {
-            $o[$t->slug]  = $t->name;
+            $o[$t->term_id]  = $t->name;
         }
 
         return $o;
