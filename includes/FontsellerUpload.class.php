@@ -108,7 +108,7 @@ class FontsellerUpload {
                     {   
                         rename( FS_UPLOAD . 'upload/' . $file['title'] . '.' . $format, FS_UPLOAD . 'recorded/' . $file['title'] . '.' . $format ); // Move the file
                     }
-                } var_dump( $parentId ); var_dump( $_POST['rep'] );
+                } //var_dump( $parentId ); var_dump( $_POST['rep'] );
                 add_post_meta( $parentId, 'repFont', $_POST['rep'] );
                 
                 // Delete unaccepted fonts

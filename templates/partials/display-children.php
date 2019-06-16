@@ -7,7 +7,8 @@
     <div class="row">
         <h1><?php echo $parent->post_title; ?></h1>
         <form action="<?php echo site_url(); ?>/cart" method="post" class="font-buy-all_form">
-            <p class="variant-count">A <?php echo $standard; ?> font with <?php echo $c = count( $fonts ); ?> variant <?php echo ( 1 == $c ) ? '' : 's'; ?> | &pound;<?php echo number_format( $prices[strtolower( $standard )] * $c, 2);?>
+            <input type="hidden" name="fontId" value="<?php echo join( ',', $fontIds ); ?>" />
+            <p class="variant-count">A <?php echo $standard; ?> font with <?php echo $c = count( $fonts ); ?> variant<?php echo ( 1 == $c ) ? '' : 's'; ?> | &pound;<?php echo number_format( $prices[strtolower( $standard )] * $c, 2);?>
             <span class="font_buy"><input type="submit" class="button button-primary" name="addToCart" value="Add Font Set to Cart"></p>
         </form>
         
@@ -37,7 +38,7 @@
                     </div>
                     <div class="font-child-list-entry_buy">
                         <form action="<?php echo site_url(); ?>/cart" method="post">
-                            <input type="hidden" name="fontId" value="<?php echo $font['id']; ?>" />
+                            <input type="hidden" name="fontId" value="<?php echo $font['id'] . ':' . $prices[strtolower( $standard )]; ?>" />
                             <span class="font_buy"><input type="submit" class="button button-primary" name="addToCart" value="Add Font to Cart">
                         </form>
                     </div>

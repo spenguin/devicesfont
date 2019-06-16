@@ -11,6 +11,12 @@ function createShortcodes()
    add_shortcode( 'fs-display', 'displayFonts' );
    add_shortcode( 'fs-cart', 'displayCart' );
    add_shortcode( 'fs-checkout', 'displayCheckout' );
+   add_shortcode( 'fs-reset', 'resetSession' );
+}
+
+function resetSession()
+{
+    unset( $_SESSION['cart'] );
 }
 
 function createFontsellerUpload()
@@ -25,8 +31,9 @@ function displayFonts()
         // Get child fonts
         $parent     = getParent( $_GET['fontFamily'] );
         $standard   = reset( getSetTerms( $parent->ID, 'standard' ) );
-        $prices     = getPricing( $standard );
+        $prices     = getPricing( $standard ); 
         $fonts      = getChildFonts( $parent->ID ); // use getFonts?
+        $fontIds    = extractFontIds( $fonts, $prices[strtolower( $standard )] );
         include_once( FS_TEMPLATES . 'partials/display-children.php' );
 
     }
@@ -157,12 +164,86 @@ function getSetTerms( $id, $taxonomy )
     return $o;
 }
 
+function extractFontIds( $fonts, $price )
+{   
+    $o  = [];
+    foreach( $fonts as $f )
+    {
+        $o[]    = $f['id'] . ':' . $price;
+    }
+    return $o;
+}
+
 function displayCart()
 {
-    echo 'Cart';
+    if( isset( $_POST['addToCart'] ) )  // Adding an item to the shopping cart
+    {
+        $fontIds = stringToArray( $_POST['fontId'] ); 
+        if( !isset( $_SESSION['cart'] ) ) $_SESSION ['cart']    = [];
+        $_SESSION['cart']   = $_SESSION['cart'] + $fontIds;
+    }
+    if( isset( $_REQUEST['remove'] ) )
+    {
+        unset( $_SESSION['cart'][$_REQUEST['remove']] );
+        //removeFont( $_REQUEST['remove'] );
+    }
+    $fonts  = organiseFonts( $_SESSION['cart'] );
+    
+    include_once( FS_TEMPLATES . 'partials/display/cart.php' );
 }
 
 function displayCheckout()
 {
-    echo 'Checkout';
+    include_once( FS_TEMPLATES . 'partials/display/checkout.php' );
 }
+
+function organiseFonts( $cart )
+{   
+    $o  = [];
+    //$cart   = stringToArray( $cart );
+    foreach( $cart as $k => $c )
+    {
+        $font   = get_post( $k ); //var_dump( $font );
+        $o[$k]  = [
+            'name'  => $font->post_title,
+            'price' => $c
+        ];
+    } //var_dump( $o );
+    return $o;
+}
+
+function removeFont( $fontId )
+{
+    $cart   = explode( ',', $_SESSION['cart'] );
+    $o      = [];
+    foreach( $cart as $c )
+    {
+        $c  = explode( ':', $c );
+        if( $fontId == $c[0] ) continue;
+        $o[]    = join( ':', $c );
+    }
+    $_SESSION['cart']   = join( ',', $o );
+}
+
+function arrayToString( $array )
+{
+    $o  = [];
+    foreach( $array as $k => $v )
+    {
+        $o[]    = $k . ':' . $v;
+    }
+    return $o;
+}
+
+function stringToArray( $str )
+{   
+    $str    = explode( ',', $str );
+    $o  = [];
+    foreach( $str as $s )
+    {
+        $s  = explode( ':', $s );
+        $o[$s[0]]   = $s[1];
+    } 
+    return $o;
+}
+
