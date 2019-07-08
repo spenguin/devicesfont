@@ -47,6 +47,8 @@ class FontsellerDatabase {
                 `discount` float( 8,2 ) NOT NULL DEFAULT '00000.00',
                 `total` float( 8,2 ) NOT NULL DEFAULT '00000.00',
                 `paymenttoken` varchar( 255 ) NOT NULL DEFAULT '',
+                `orderkey` varchar( 255) NOT NULL DEFAULT '',
+                `downloaded` TIMESTAMP
 			  PRIMARY KEY ( `id` )
 			) DEFAULT CHARSET=utf8";
 
@@ -59,6 +61,7 @@ class FontsellerDatabase {
 	function create_items() {
 		$sql = "CREATE TABLE " . $this->order_items . " (
                 `id` int( 11 ) unsigned NOT NULL AUTO_INCREMENT,
+                `orderId` int(11) unsigned NOT NULL,
                 `fontId` int( 11 ) unsigned NOT NULL,
                 `formatId` int( 11 ) unsigned NOT NULL,
                 `charge` float( 6,2 ) NOT NULL DEFAULT '000.00',

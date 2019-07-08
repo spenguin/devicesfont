@@ -37,6 +37,7 @@ require_once( FS_INCLUDES . 'FontsellerAdmin.php' );
 require_once( FS_INCLUDES . 'FontsellerShortcodes.php' );
 require_once( FS_INCLUDES . 'FontsellerPricing.php' );
 require_once( FS_INCLUDES . 'FontsellerPages.php' );
+require_once( FS_INCLUDES . 'FontsellerOrders.class.php' );
 //require_once( FS_INCLUDES . 'FontsellerPaymentGateways.php' );
 
 // Run databases

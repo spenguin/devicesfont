@@ -12,6 +12,8 @@ function createShortcodes()
    add_shortcode( 'fs-cart', 'displayCart' );
    add_shortcode( 'fs-checkout', 'displayCheckout' );
    add_shortcode( 'fs-reset', 'resetSession' );
+   add_shortcode( 'fs-confirmed', 'confirmOrder' );
+   add_shortcode( 'fs-order', 'downloadOrder' );
 }
 
 function resetSession()
@@ -194,7 +196,26 @@ function displayCart()
 
 function displayCheckout()
 {
+    // Need the Orders file to generate things
+    include_once( 'FontsellerOrders.class.php' );
+    $Order  = new FontsellerOrders; 
+    $order  = organiseFonts( $_SESSION['cart'] ); 
+    $Order->writeOrder( $order ); 
+    
     include_once( FS_TEMPLATES . 'partials/display/checkout.php' );
+}
+
+function confirmOrder()
+{
+    $orderId    = $_POST['custom'];
+    $verifySign = $_POST['verify_sign'];
+    $email      = $_POST['payer_email'];
+    include_once( 'FontsellerOrders.class.php' );
+    $Order  = new FontsellerOrders;     
+    $key        = $Order->generateOrder( $orderId, $verifySign );
+    $Order->emailOrder( $email, $key );
+
+    include_once( FS_TEMPLATES . 'partials/display/order.php' );
 }
 
 function organiseFonts( $cart )
