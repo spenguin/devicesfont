@@ -41,9 +41,13 @@ function displayFonts()
     }
     else
     {   
+        $pageNo = isset( $_REQUEST['pageNo'] ) ? filter_var( $_REQUEST['pageNo'], FILTER_VALIDATE_INT ) : 1;
+        $pages  = getFontPages();
         // Get Parent fonts
-        $fonts   = getFonts();
-        include_once( FS_TEMPLATES . 'display-parents.php' );
+        $fonts   = getFonts( 0, $pageNo );
+        ob_start();
+            include_once( FS_TEMPLATES . 'display-parents.php' );
+        return ob_get_clean();
     }
 
 
@@ -52,12 +56,13 @@ function displayFonts()
 /**
  * Get Fonts by Parent Id
  */
-function getFonts( $parentId = 0 )
+function getFonts( $parentId = 0, $pageNo = 1 )
 {
     $args = [
         'post_type'       => 'font',
         'post_parent'     => $parentId,
-        'posts_per_page'  => -1
+        'posts_per_page'  => 20, // [FIX]
+        'offset'            => 20 * ($pageNo - 1 )
     ];
 
     $query   = new WP_Query( $args ); 
@@ -73,6 +78,27 @@ function getFonts( $parentId = 0 )
         ];
     endwhile; endif; 
     return $o;
+}
+
+/**
+ *  Get number of pages of fonts
+ */
+function getFontPages()
+{
+    $args = [
+        'post_type'       => 'font',
+        'post_parent'     => 0,
+        'posts_per_page'  => -1, // [FIX]
+    ];
+
+    $query  = new WP_Query( $args ); 
+    $count  = 0;
+    if( $query->have_posts() )
+    {
+        $count  = count( $query->posts );
+    } 
+    return ceil( $count / 20 );
+
 }
 
 /**
@@ -205,14 +231,18 @@ function displayCheckout()
     include_once( FS_TEMPLATES . 'partials/display/checkout.php' );
 }
 
+/**
+ * Writes the order to the db, generates an unique key, sends the email and presents the download link
+ */
 function confirmOrder()
-{
+{   
     $orderId    = $_POST['custom'];
     $verifySign = $_POST['verify_sign'];
     $email      = $_POST['payer_email'];
     include_once( 'FontsellerOrders.class.php' );
+    $customerId = 0;    // [FIX] Need to do something about customers
     $Order  = new FontsellerOrders;     
-    $key        = $Order->generateOrder( $orderId, $verifySign );
+    $key        = $Order->generateOrder( $orderId, $verifySign, $customerId ); 
     $Order->emailOrder( $email, $key );
 
     include_once( FS_TEMPLATES . 'partials/display/order.php' );

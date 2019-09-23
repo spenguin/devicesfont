@@ -5,13 +5,14 @@
 ?>
 <div class="container">
     <div class="row">
-        <h1><?php echo $parent->post_title; ?></h1>
-        <form action="<?php echo site_url(); ?>/cart" method="post" class="font-buy-all_form">
-            <input type="hidden" name="fontId" value="<?php echo join( ',', $fontIds ); ?>" />
-            <p class="variant-count">A <?php echo $standard; ?> font with <?php echo $c = count( $fonts ); ?> variant<?php echo ( 1 == $c ) ? '' : 's'; ?> | &pound;<?php echo number_format( $prices[strtolower( $standard )] * $c, 2);?>
-            <span class="font_buy"><input type="submit" class="button button-primary" name="addToCart" value="Add Font Set to Cart"></p>
-        </form>
-        
+        <div class="font-child_heading">
+            <h1><?php echo $parent->post_title; ?></h1>
+            <form action="<?php echo site_url(); ?>/cart" method="post" class="font-buy-all_form">
+                <input type="hidden" name="fontId" value="<?php echo join( ',', $fontIds ); ?>" />
+                <p class="variant-count">A <?php echo $standard; ?> font with <?php echo $c = count( $fonts ); ?> variant<?php echo ( 1 == $c ) ? '' : 's'; ?> | &pound;<?php echo number_format( $prices[strtolower( $standard )] * $c, 2);?>
+                <span class="font_buy"><input type="submit" class="button button-primary" name="addToCart" value="Add Font Set to Cart"></p>
+            </form>
+        </div>
     </div>
     <div class="row">
         <div class="font-child-list">
@@ -27,12 +28,18 @@
 
                 </style>
                 <div class="font-child-list-entry">
-                    <p class="details">
+                    <p class="details_fullscreen">
                         <?php echo $title; ?> |
                         <?php echo 'Formats: ' . $font['formats'] . ' |'; ?>
                         <?php echo empty( $font['description'] ) ? '' : $font['description'] . ' |'; ?>
                         &nbsp;&pound;<?php echo number_format( $prices[strtolower( $standard )], 2 ) . ' |'; ?>
                     </p>
+                    <p class="details_mobile">
+                        <h4><?php echo $title; ?></h4><br />
+                        <?php echo 'Formats: ' . $font['formats'] . '<br />'; ?>
+                        <?php echo empty( $font['description'] ) ? '' : $font['description'] . '<br />'; ?>
+                        &nbsp;&pound;<?php echo number_format( $prices[strtolower( $standard )], 2 ) . '<br />'; ?>
+                    </p>                    
                     <div class="font-child-list-entry_sample <?php echo $font['slug']; ?>">
                         ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890,.;:?!%&{()}*$@
                     </div>

@@ -48,7 +48,7 @@ class FontsellerDatabase {
                 `total` float( 8,2 ) NOT NULL DEFAULT '00000.00',
                 `paymenttoken` varchar( 255 ) NOT NULL DEFAULT '',
                 `orderkey` varchar( 255) NOT NULL DEFAULT '',
-                `downloaded` TIMESTAMP
+                `downloaded` TIMESTAMP,
 			  PRIMARY KEY ( `id` )
 			) DEFAULT CHARSET=utf8";
 
