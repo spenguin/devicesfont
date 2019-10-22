@@ -278,3 +278,11 @@ function countryList()
         <option value="ZW">Zimbabwe</option>
     <?php return ob_get_clean();
 }
+
+/**
+ * Get the current URL and separate the $_GET parameters
+ */
+function getThisUrl()
+{
+    
+}

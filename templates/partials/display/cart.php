@@ -32,10 +32,10 @@
                     <div class="divTableCell cart_charge">&pound;<?php echo number_format( $total, 2 ); ?></div>
                     <div class="divTableCell"><a href="<?php echo site_url( '/checkout/' ); ?>" class="button button-primary"><span class="ck_fullscreen">Continue to Checkout</a></div>
                 </div>     
-                <div class="divTableRow <?php echo $even ? 'shade' : ''; ?> ck_mobile">
-                    <div class="divTableCell"><a href="<?php echo site_url( '/checkout/' ); ?>" class="button button-primary">Continue to Checkout</a></div>
-                </div>                           
-            </div>            
+            </div>
         </div>
+        <div class="<?php echo $even ? 'shade' : ''; ?> ck_mobile">
+            <div class="linkToCheckout"><a href="<?php echo site_url( '/checkout/' ); ?>">Continue to Checkout</a></div>
+        </div>         
     </div>
 </div>
