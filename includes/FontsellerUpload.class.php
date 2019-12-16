@@ -29,8 +29,8 @@ class FontsellerUpload {
 //                $files  = array_diff( $files, ['.', '..'] );
                 $guess  = $this->guessFamilyName( reset( $this->files ) );
                 $exists     = $this->checkFamilyName( $guess );
-                $classes    = $this->getTerms( 'classification' ); 
-                $standards  = $this->getTerms( 'standard' );             
+                $classes    = getTerms( 'classification' ); 
+                $standards  = getTerms( 'standard' );             
                 if( empty( $errors ) ) $step    = 2;
             }
         }
@@ -314,24 +314,6 @@ class FontsellerUpload {
         }
     }    
     
-    /**
-     * Get Terms based on taxonomy
-     */
-    function getTerms( $slug )
-    {
-        $terms = get_terms( [
-            'taxonomy' => $slug,
-            'hide_empty' => false,
-        ] );
-        $o  = [];
-        foreach( $terms as $t )
-        {
-            $o[$t->term_id]  = $t->name;
-        }
-
-        return $o;
-    }
-
     /**
      * Appends the specified taxonomy term to the incoming post object. If 
     * the term doesn't already exist in the database, it will be created.

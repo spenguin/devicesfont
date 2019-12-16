@@ -18,10 +18,10 @@
             </tr>
         </thead>        
         <?php 
-            foreach( $fonts as $font ): ?>
+            foreach( $fonts as $font ): //var_dump( $font ); ?>
                 <tr>
                     <td></td>
-                    <td><?php echo $font['title']; ?></td>
+                    <td><a href="<?php echo $url; ?>&fontFamily=<?php echo $font['slug']; ?>"><?php echo $font['title']; ?></a></td>
                     <td><?php echo $font['standard']; ?></td>
                     <td><?php echo $font['repFont']; ?></td>
                 </tr>

@@ -59,10 +59,12 @@ function displayFonts()
 function getFonts( $parentId = 0, $pageNo = 1 )
 {
     $args = [
-        'post_type'       => 'font',
-        'post_parent'     => $parentId,
-        'posts_per_page'  => 20, // [FIX]
-        'offset'            => 20 * ($pageNo - 1 )
+        'post_type'         => 'font',
+        'post_parent'       => $parentId,
+        'posts_per_page'    => 20, // [FIX]
+        'offset'            => 20 * ($pageNo - 1 ),
+        'orderby'           => 'title',
+        'order'             => 'ASC'
     ];
 
     $query   = new WP_Query( $args ); 
@@ -121,7 +123,7 @@ function getRepFont( $id )
         $formats    = explode( ',', get_post_meta( $repFont->ID, 'formats', TRUE ) );
         if( in_array( 'woff', $formats ) )
         {
-            $repFontStr = $repFont->post_title . '.woff';
+            $repFontStr = $repFont->post_title . '.otf';
         }
     }
 

@@ -284,5 +284,122 @@ function countryList()
  */
 function getThisUrl()
 {
+    return "http://wphughes.loc/wp-admin/admin.php?page=fontseller-options";
+}
+
+/**
+ * Render an image from a string and a font file
+ */
+function renderText( $font, $fontSize = 100, $text = "This is a test" )
+{
+    //$font = "C:/wamp64/www/wp_hughes/wp-content/uploads/fontseller/recorded/" . $fontName;
+
+    // Calculate the required width to hold this text
+    $enclosingBox = imagettfbbox($fontSize, 0, $font, $text);
+    $width = abs($enclosingBox[4] - $enclosingBox[0]);
+    $height = abs($enclosingBox[5] - $enclosingBox[1]);
+
+    // Create the image and define colours
+    $im     = imagecreatetruecolor($width, $height);
+    // Transparent Background
+    imagealphablending($im, false);
+    $transparency = imagecolorallocatealpha($im, 0, 0, 0, 127);
+    imagefill($im, 0, 0, $transparency);
+    imagesavealpha($im, true);
+
+
+    $white  = imagecolorallocate($im, 255, 255, 255);
+    //$grey   = imagecolorallocate($im, 37, 37, 37);
+    $black  = imagecolorallocate( $im, 0, 0, 0 );
+
+    // Fill the background
+    //imagefilledrectangle($im, 0, 0, $width, $height, $white);
+    imagefilledrectangle($im, 0, 0, $width, $height, $white);
+
+
+    // Render the text
+    imagettftext($im, $fontSize, 0, -1 * $enclosingBox[0], $height, $black, $font, $text);
+
+    // Output and cleanup
+        ob_start();
+            imagepng( $im, NULL );
+        return ob_get_clean();
+}
+
+/**
+ * Render an image from a string and a font file, with a transparent background
+ */
+function renderTransparentText( $font, $fontSize = 100, $text = "This is a test" )
+{
+
+    // Calculate the required width to hold this text
+    $enclosingBox = imagettfbbox($fontSize, 0, $font, $text);
+    $width = abs($enclosingBox[4] - $enclosingBox[0]);
+    //$text = $width;
+    $height = abs($enclosingBox[5] - $enclosingBox[1]);
+    //$text = join( ',', $enclosingBox );
+
+    // Create the image and define colours
+    $im = imagecreatetruecolor($width, $height);
     
+    // Transparent Background
+    imagealphablending($im, false);
+    $transparency = imagecolorallocatealpha($im, 0, 0, 0, 127);
+    imagefill($im, 0, 0, $transparency);
+    imagesavealpha($im, true);
+
+    // Drawing over
+    $white  = imagecolorallocate($im, 255, 255, 255);
+    $black = imagecolorallocate($im, 0, 0, 0);
+
+    imagefilledrectangle($im, 0, 0, $width, $height, $transparency);
+
+    // Render the text
+    imagettftext($im, $fontSize, 0, -1 * $enclosingBox[0], $height, $black, $font, $text);    
+
+    // Output and cleanup
+        //$name   = 'image/test.png'; //return $name;
+        ob_start();
+            //header('Content-Type: image/png');
+            imagepng( $im, NULL );
+        return ob_get_clean();
+        //return $name;
+}
+
+function setOptionsStr( $array, $selected=NULL )
+{   
+    $o  = [];
+    foreach( $array as $key => $value )
+    {
+        $o[]    = '<option value="' . $key . '"' . ( ( $selected == $key || $selected == $value ) ? ' selected' : '' ) . '>' . $value . '</option>';
+    }
+    return join( '', $o );
+}
+
+/**
+ * Get Terms based on taxonomy
+ */
+function getTerms( $slug )
+{   
+    $terms = get_terms( [
+        'taxonomy' => $slug,
+        'hide_empty' => false,
+    ] );
+    $o  = [];
+    foreach( $terms as $t )
+    {
+        $o[$t->term_id]  = $t->name;
+    }
+    return $o;
+}
+
+function extractValues( $array, $keyElement, $element )
+{
+    $o  = [];
+    foreach( $array as $key => $value )
+    {
+        $keyValue   = 'key' == $keyElement ? $key : $value[$keyElement];
+        $o[$keyValue]   = $value[$element];
+    }
+    return $o;
 }
