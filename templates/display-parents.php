@@ -2,15 +2,18 @@
 /**
  * Display parent fonts
  */ //var_dump( $fonts );
-$repFontSize    = intval( get_option( 'repFontSize' ) ); //var_dump( $repFontSize );
+$repDefaultFontSize    = intval( get_option( 'repFontSize' ) ); //var_dump( $repFontSize );
 ?>
 <!--    <div class="container">
         <div class="row">-->
             <div class="font-list">
-                <?php foreach( $fonts as $font ):
+                <?php foreach( $fonts as $fontId => $font ):
                     // Need to get repSize for set
-                    $fontPath   = 'C:\wamp64\www\wp_hughes\wp-content\uploads\fontseller\recorded\/' . $font['repFont'];
-                    
+                    $fontPath       = FS_RECORDED . $font['repFont']; //'C:\wamp64\www\wp_hughes\wp-content\uploads\fontseller\recorded\/' . $font['repFont'];
+                    //$repFontSetSize = get_post_meta( $fontId, 'repFontSize', TRUE );
+                    //$repFontSize    = ( !empty( $repFontSetSize ) ) ? $repFontSetSize : $repDefaultFontSize; //var_dump( $repFontSize );
+                    $repFontSize    = $repDefaultFontSize;
+                    $fontAdj        = get_post_meta( $fontId, 'fontAdj', TRUE ); 
                     ?>
             <!--        <style>
                         @font-face{ 
@@ -28,7 +31,7 @@ $repFontSize    = intval( get_option( 'repFontSize' ) ); //var_dump( $repFontSiz
                             <h3><?php echo $font['title']; ?></h3>
                             <div class="font-list-entry_sample">
                                 <?php if( file_exists( $fontPath ) ): ?>
-                                    <img src="data:image/png;base64,<?php echo base64_encode( renderTransparentText( $fontPath, $repFontSize, "ABCDEFGHIJKLMNO") ); ?>" />  
+                                    <img src="data:image/png;base64,<?php echo base64_encode( renderTransparentText( $fontPath, $repFontSize, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", $fontAdj ) ); ?>" />  
                                 <?php endif; ?>
                             </div>
                             <div class="font-list-entry_standard">

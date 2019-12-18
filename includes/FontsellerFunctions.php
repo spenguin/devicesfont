@@ -290,8 +290,8 @@ function getThisUrl()
 /**
  * Render an image from a string and a font file
  */
-function renderText( $font, $fontSize = 100, $text = "This is a test" )
-{
+function renderText( $font, $fontSize = 100, $text = "This is a test", $adj = 0 )
+{   
     //$font = "C:/wamp64/www/wp_hughes/wp-content/uploads/fontseller/recorded/" . $fontName;
 
     // Calculate the required width to hold this text
@@ -318,7 +318,7 @@ function renderText( $font, $fontSize = 100, $text = "This is a test" )
 
 
     // Render the text
-    imagettftext($im, $fontSize, 0, -1 * $enclosingBox[0], $height, $black, $font, $text);
+    imagettftext($im, $fontSize, 0, -1 * $enclosingBox[0], $height-$adj, $black, $font, $text);
 
     // Output and cleanup
         ob_start();
@@ -329,8 +329,8 @@ function renderText( $font, $fontSize = 100, $text = "This is a test" )
 /**
  * Render an image from a string and a font file, with a transparent background
  */
-function renderTransparentText( $font, $fontSize = 100, $text = "This is a test" )
-{
+function renderTransparentText( $font, $fontSize = 100, $text = "This is a test", $adj = 0  )
+{   
 
     // Calculate the required width to hold this text
     $enclosingBox = imagettfbbox($fontSize, 0, $font, $text);
@@ -355,7 +355,7 @@ function renderTransparentText( $font, $fontSize = 100, $text = "This is a test"
     imagefilledrectangle($im, 0, 0, $width, $height, $transparency);
 
     // Render the text
-    imagettftext($im, $fontSize, 0, -1 * $enclosingBox[0], $height, $black, $font, $text);    
+    imagettftext($im, $fontSize, 0, -1 * $enclosingBox[0], $height-intval( $adj ), $black, $font, $text);    
 
     // Output and cleanup
         //$name   = 'image/test.png'; //return $name;

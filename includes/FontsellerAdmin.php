@@ -32,7 +32,7 @@ function addFontsellerMenu()
 function fsDisplay()
 {   
     if( isset( $_GET['fontFamily'] ) )
-    {
+    {   
         $classes    = getTerms( 'classification' ); 
         $standards  = getTerms( 'standard' );
         
@@ -40,13 +40,14 @@ function fsDisplay()
         $parent     = getParent( $_GET['fontFamily'] ); //var_dump( $parent );
         $fonts      = getChildFonts( $parent->ID ); //var_dump( $fonts );
         if( isset( $_POST['submit'] ) )
-        {
+        {   
             $setTitle   = filter_var( $_POST['setTitle'], FILTER_SANITIZE_STRING );
             $setStandard= $_POST['setStandard'];
             $setRepFont = $_POST['setRepFont']; 
             $setRepFontSize = filter_var( $_POST['setRepFontSize'], FILTER_SANITIZE_STRING ); 
             //$setFontFormatOffered   = $_POST['setFontFormatOffered'];
             $setFontClass   = $_POST['setFontClass'];
+            $setFontAdj     = $_POST['setFontAdj'];
 
             // Write the results to the db
             if( $parent->post_title !== $setTitle )
@@ -57,9 +58,12 @@ function fsDisplay()
                 ] );
             }
             wp_set_post_terms( $parent->ID, [$setStandard], 'standard' );
-            add_post_meta( $parent->ID, 'repFont', $setRepFont );
-            add_post_meta( $parent->ID, 'repFontSize', $setRepFontSize );
-            add_post_meta( $parent->ID, 'fontFormatOffered', $setRepFontSize );
+            update_post_meta( $parent->ID, 'repFont', $setRepFont );
+            delete_post_meta( $parent->ID, 'repFontSize' );
+            update_post_meta( $parent->ID, 'repFontSize', $setRepFontSize );
+            update_post_meta( $parent->ID, 'fontFormatOffered', $setRepFontSize );
+            delete_post_meta( $parent->ID, 'fontAdj' );
+            update_post_meta( $parent->ID, 'fontAdj', $setFontAdj );
             wp_set_post_terms( $parent->ID, $setFontClass, 'classification' );
         }
 
@@ -67,8 +71,9 @@ function fsDisplay()
         $prices     = getPricing( $standard ); 
         $fontIds    = extractFontIds( $fonts, $prices[strtolower( $standard )] );
         $repFont    = reset( explode( '.', getRepFont( $parent->ID ) ) ); 
-        $repFontSize= get_post_meta( $parent->ID, 'repFontSize', TRUE );
+        $repFontSize= get_post_meta( $parent->ID, 'repFontSize', TRUE ); 
         $fontClasses= getSetTerms( $parent->ID, 'classification' );
+        $fontAdj    = get_post_meta( $parent->ID, 'fontAdj', TRUE ); 
         //$fontFormatOffered  = get_post_meta( $parent->ID, 'fontFormatOffered', TRUE );
         include_once( FS_TEMPLATES . 'partials/admin/displayFontSet.php' );
 

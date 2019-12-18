@@ -14,7 +14,7 @@
 <div class="wrap">
     <div id="icon-options-general" class="icon32"><br></div>
     <h2>Font Set <?php echo $parent->post_title; ?></h2>
-    <form method="post" action="admin.php?page=fontseller-options&fontFamily=regulator-a">
+    <form method="post" action="admin.php?page=fontseller-options&fontFamily=<?php echo $_GET['fontFamily']; ?>">
         <input type='hidden' name='option_page' value='general' /><input type="hidden" name="action" value="update" /><input type="hidden" id="_wpnonce" name="_wpnonce" value="08d7a0dc20" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/options-general.php" />
         
         <fieldset>
@@ -48,6 +48,13 @@
                         <br />Note: Use this field only to override the base setting
                     </td>
                 </tr>   
+                <tr>
+                    <th scope="row"><label for="setFontAdj">Font Image Adjustment</label></th>
+                    <td>
+                        <input name="setFontAdj" type="text" id="setFontAdj" value="<?php echo isset( $fontAdj ) ? $fontAdj : ''; ?>" class="regular-text" />
+                        <br />Note: Use this field if the font is cut off in the generated image
+                    </td>
+                </tr>                 
     <!--            <tr>
                     <th scope="row"><label for="setFontFormatOffered">Font Formats Offered</label></th>
                     <td>

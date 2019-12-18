@@ -30,6 +30,8 @@ function displayFonts()
 {
     if( isset( $_GET['fontFamily'] ) )
     {
+        //do_action( 'fontseller_display_fontset' );
+        
         // Get child fonts
         $parent     = getParent( $_GET['fontFamily'] );
         $standard   = reset( getSetTerms( $parent->ID, 'standard' ) );
@@ -41,6 +43,8 @@ function displayFonts()
     }
     else
     {   
+        //do_action( 'fontseller_display_fontsets' );
+        
         $pageNo = isset( $_REQUEST['pageNo'] ) ? filter_var( $_REQUEST['pageNo'], FILTER_VALIDATE_INT ) : 1;
         $pages  = getFontPages();
         // Get Parent fonts
@@ -58,11 +62,14 @@ function displayFonts()
  */
 function getFonts( $parentId = 0, $pageNo = 1 )
 {
+    $perPage    = get_option( 'showFontSets', 20 );
+    if( empty( $perPage ) ) $perPage    = 20;
+    
     $args = [
         'post_type'         => 'font',
         'post_parent'       => $parentId,
-        'posts_per_page'    => 20, // [FIX]
-        'offset'            => 20 * ($pageNo - 1 ),
+        'posts_per_page'    => $perPage, // [FIX]
+        'offset'            => $perPage * ($pageNo - 1 ),
         'orderby'           => 'title',
         'order'             => 'ASC'
     ];
@@ -109,8 +116,32 @@ function getFontPages()
  * else use the representative font
  */
 function getRepFont( $id )
-{
-    $repFontStr    = get_post_meta( $id, 'repFont', TRUE ); 
+{   
+    $repFontStr    = get_post_meta( $id, 'repFont', TRUE ); //var_dump( $repFontStr );
+    if( is_numeric( $repFontStr ) )
+    {
+        $repFont    = get_post( $repFontStr ); //var_dump( $repFont );
+        return $repFont->post_title . ".otf"; //[FIX - need to determine what font format]
+    }
+
+    if( is_string( $repFontStr ) )
+    {
+        $the_slug = reset( explode( '.', $repFontStr ) );
+        $args = array(
+        'name'        => $the_slug,
+        'post_type'   => 'font',
+        'post_status' => 'publish',
+        'numberposts' => 1
+        );
+        $my_posts = get_posts($args);
+        return $my_posts[0]->post_title . '.otf'; //[FIX - need to determine what font format]
+    }
+
+
+    //if( !is_numeric( $repFontStr ) ) return $repFontStr . ".otf"; //[FIX - need to determine what font format]
+    $repFont    = get_post( $repFontStr ); //var_dump( $repFont );
+    return $repFont->post_title . ".otf"; //[FIX - need to determine what font format]
+    
     if( !empty( $repFontStr ) )
     {
         $args   = [
@@ -121,7 +152,7 @@ function getRepFont( $id )
         $posts = get_posts( $args ); 
         $repFont    = reset( $posts ); 
         $formats    = explode( ',', get_post_meta( $repFont->ID, 'formats', TRUE ) );
-        if( in_array( 'woff', $formats ) )
+        if( in_array( 'otf', $formats ) )
         {
             $repFontStr = $repFont->post_title . '.otf';
         }
