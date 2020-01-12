@@ -8,9 +8,9 @@ $return = site_url(). '/payment-complete';  // For initial testing purposes
 ?>
 <div class="container">
     <div class="row">
-        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" class="checkout">
+        <form action="<?php echo $ppUrl; ?>" method="post" class="checkout">
             <input type="hidden" name="cmd" value="_xclick">
-            <input type="hidden" name="business" value="info@soaringpenguinpress.com">
+            <input type="hidden" name="business" value="<?php echo $account; ?>">
             <input type="hidden" name="quantity" value="1">
             <input type="hidden" name="item_name" value="Order <?php echo $Order->_orderId; ?>">
             <input type="hidden" name="amount" value="<?php echo $Order->_total; ?>">

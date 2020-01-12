@@ -54,7 +54,14 @@
                         <input name="setFontAdj" type="text" id="setFontAdj" value="<?php echo isset( $fontAdj ) ? $fontAdj : ''; ?>" class="regular-text" />
                         <br />Note: Use this field if the font is cut off in the generated image
                     </td>
-                </tr>                 
+                </tr>   
+                <tr>
+                    <th scope="row"><label for="setFontStr">Font Image String</label></th>
+                    <td>
+                        <input name="setFontStr" type="text" id="setFontStr" value="<?php echo isset( $fontStr ) ? $fontStr : ''; ?>" class="regular-text" />
+                        <br />Note: Use this field to override the default presentational string
+                    </td>
+                </tr>                              
     <!--            <tr>
                     <th scope="row"><label for="setFontFormatOffered">Font Formats Offered</label></th>
                     <td>

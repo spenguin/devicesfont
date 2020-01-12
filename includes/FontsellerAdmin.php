@@ -48,6 +48,7 @@ function fsDisplay()
             //$setFontFormatOffered   = $_POST['setFontFormatOffered'];
             $setFontClass   = $_POST['setFontClass'];
             $setFontAdj     = $_POST['setFontAdj'];
+            $setFontStr     = $_POST['setFontStr'];
 
             // Write the results to the db
             if( $parent->post_title !== $setTitle )
@@ -64,6 +65,8 @@ function fsDisplay()
             update_post_meta( $parent->ID, 'fontFormatOffered', $setRepFontSize );
             delete_post_meta( $parent->ID, 'fontAdj' );
             update_post_meta( $parent->ID, 'fontAdj', $setFontAdj );
+            delete_post_meta( $parent->ID, 'fontStr' );
+            update_post_meta( $parent->ID, 'fontStr', $setFontStr );            
             wp_set_post_terms( $parent->ID, $setFontClass, 'classification' );
         }
 
@@ -74,6 +77,7 @@ function fsDisplay()
         $repFontSize= get_post_meta( $parent->ID, 'repFontSize', TRUE ); 
         $fontClasses= getSetTerms( $parent->ID, 'classification' );
         $fontAdj    = get_post_meta( $parent->ID, 'fontAdj', TRUE ); 
+        $fontStr    = get_post_meta( $parent->ID, 'fontStr', TRUE ); 
         //$fontFormatOffered  = get_post_meta( $parent->ID, 'fontFormatOffered', TRUE );
         include_once( FS_TEMPLATES . 'partials/admin/displayFontSet.php' );
 
@@ -81,7 +85,7 @@ function fsDisplay()
     else
     {   
         $pageNo = isset( $_REQUEST['pageNo'] ) ? filter_var( $_REQUEST['pageNo'], FILTER_VALIDATE_INT ) : 1;
-        $pages  = getFontPages();
+        $pages  = getFontPages( 20 );
         // Get Parent fonts
         $fonts   = getFonts( 0, $pageNo );
         include_once( FS_TEMPLATES . '/partials/admin/displayFontFamilies.php' );
@@ -97,6 +101,7 @@ function fsSettingsPage()
     {
         $fontFormatOffered  = $_POST['setFontFormatOffered'];   // [FIX]Should sanitise
         $repFontSize        = $_POST['setRepFontSize'];
+        $repFontStr         = $_POST['setRepFontStr'];
         $showFontSets       = $_POST['showFontSets'];
         $status             = isset( $_POST['setStatus'] ) ? $_POST['setStatus'] : 0;
         $testAccount        = isset( $_POST['setTestAccount'] ) ? $_POST['setTestAccount'] : '';
@@ -104,6 +109,7 @@ function fsSettingsPage()
 
         update_option( 'fontFormatOffered', $fontFormatOffered );
         update_option( 'repFontSize', $repFontSize );
+        update_option( 'repFontStr', $repFontStr );
         update_option( 'showFontSets', $showFontSets );
         update_option( 'paypalStatus', $status );
         update_option( 'testAccount', $testAccount );
@@ -111,6 +117,7 @@ function fsSettingsPage()
     }
     $fontFormatOffered  = get_option( 'fontFormatOffered' );
     $repFontSize        = get_option( 'repFontSize' );
+    $repFontStr         = get_option( 'repFontStr' );
     $showFontSets       = get_option( 'showFontSets' );
     $prices             = getPricing( NULL );
     $status             = get_option( 'paypalStatus', 0 ); 

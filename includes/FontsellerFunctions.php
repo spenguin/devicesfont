@@ -4,21 +4,21 @@
  * Various functions
  */
 
-function renderPagination( $pageNo, $pages )
+function renderPagination( $pageNo, $ofPages )
 {
     if( 1 < $pageNo ): ?>
         <div class="font-list_pagination_prev">
-            <a href="/fonts?pageNo=<?php echo $pageNo-1; ?>">Previous</a>
+            <a href="/fonts?pageNo=<?php echo $pageNo-1; ?>&ofPages=<?php echo $ofPages; ?>">Previous</a>
         </div>
     <?php endif;
-    for( $i = 1; $i <= $pages; $i++ ): ?>
+    for( $i = 1; $i <= $ofPages; $i++ ): ?>
         <div class="font-list_pagination_p <?php echo $i == $pageNo ? 'active' : ''; ?>">
-            <a href="/fonts?pageNo=<?php echo $i; ?>"><?php echo $i; ?></a>
+            <a href="/fonts?pageNo=<?php echo $i; ?>&ofPages=<?php echo $ofPages; ?>"><?php echo $i; ?></a>
         </div>
     <?php endfor;
-    if( $pageNo < $pages ): ?>
+    if( $pageNo < $ofPages ): ?>
         <div class="font-list_pagination_next">
-            <a href="/fonts?pageNo=<?php echo $pageNo+1; ?>">Next</a>
+            <a href="/fonts?pageNo=<?php echo $pageNo+1; ?>&ofPages=<?php echo $ofPages;?>">Next</a>
         </div> 
 <?php endif;    
 }
@@ -402,4 +402,107 @@ function extractValues( $array, $keyElement, $element )
         $o[$keyValue]   = $value[$element];
     }
     return $o;
+}
+
+/**
+ * Accumulate the parameters for the presentation of the Font Set Representative Font
+ */
+function getRepFontData( $id )
+{
+    $o      = [
+        'title' => getRepFontTitle( $id ),
+        'size'  => getRepFontSize( $id ),
+        'adj'   => getRepFontAdj( $id ),
+        'str'   => getRepFontString( $id )
+    ];
+
+    return $o;
+}
+
+/**
+ * Get the Rep Font Title string from the parent Id
+ */
+function getRepFontTitle( $id )
+{
+    $repFontStr    = get_post_meta( $id, 'repFont', TRUE ); //var_dump( $repFontStr );
+    if( is_numeric( $repFontStr ) )
+    {
+        $repFont    = get_post( $repFontStr ); //var_dump( $repFont );
+        return $repFont->post_title . ".otf"; //[FIX - need to determine what font format]
+    }
+
+    if( is_string( $repFontStr ) )
+    {
+        $the_slug = reset( explode( '.', $repFontStr ) );
+        $args = array(
+        'name'        => $the_slug,
+        'post_type'   => 'font',
+        'post_status' => 'publish',
+        'numberposts' => 1
+        );
+        $my_posts = get_posts($args);
+        return $my_posts[0]->post_title . '.otf'; //[FIX - need to determine what font format]
+    }    
+}
+
+/**
+ * Get the presentational Font Size for the Rep Font
+ * Default to the size in Fontseller Settings
+ */
+function getRepFontSize( $id )
+{
+    $size   = get_post_meta( $id, 'repFontSize', TRUE );
+    if( empty( $size ) ) 
+    {
+        $size   = get_option( 'repFontSize' );
+    }
+
+    return $size;
+}
+
+/**
+ * Get the presentational Font adjustment value
+ */
+function getRepFontAdj( $id )
+{
+    $adj    = get_post_meta( $id, 'fontAdj', TRUE );
+    if( empty( $adj ) ) return 0;
+
+    return $adj;
+}
+
+/**
+ * Get the string for the presentation of the Rep Font
+ * Default to the Fontseller Settings
+ */
+function getRepFontString( $id )
+{
+    $str    = get_post_meta( $id, 'fontStr', TRUE );
+    if( empty( $str ) )
+    {
+        $str    = get_option( 'repFontStr' );
+    }
+    
+    return $str;
+}
+
+/**
+ *  Get number of pages of fonts
+ */
+function getFontPages( $perPage )
+{
+    $args = [
+        'post_type'       => 'font',
+        'post_parent'     => 0,
+        'posts_per_page'  => -1, // [FIX]
+    ];
+
+    $query  = new WP_Query( $args ); 
+    $count  = 0;
+    if( $query->have_posts() )
+    {
+        $count  = count( $query->posts );
+    } 
+    return ceil( $count / $perPage );
+
 }

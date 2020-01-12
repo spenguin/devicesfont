@@ -38,20 +38,21 @@ function displayFonts()
         $prices     = getPricing( $standard ); 
         $fonts      = getChildFonts( $parent->ID ); // use getFonts?
         $fontIds    = extractFontIds( $fonts, $prices[strtolower( $standard )] );
+        $repFont    = getRepFont( $parent->ID );
         include_once( FS_TEMPLATES . 'partials/display-children.php' );
 
     }
     else
     {   
-        //do_action( 'fontseller_display_fontsets' );
+        do_action( 'fontseller_display_fontsets' );
         
-        $pageNo = isset( $_REQUEST['pageNo'] ) ? filter_var( $_REQUEST['pageNo'], FILTER_VALIDATE_INT ) : 1;
+        /*$pageNo = isset( $_REQUEST['pageNo'] ) ? filter_var( $_REQUEST['pageNo'], FILTER_VALIDATE_INT ) : 1;
         $pages  = getFontPages();
         // Get Parent fonts
         $fonts   = getFonts( 0, $pageNo );
         ob_start();
             include_once( FS_TEMPLATES . 'display-parents.php' );
-        return ob_get_clean();
+        return ob_get_clean();*/
     }
 
 
@@ -89,32 +90,14 @@ function getFonts( $parentId = 0, $pageNo = 1 )
     return $o;
 }
 
-/**
- *  Get number of pages of fonts
- */
-function getFontPages()
-{
-    $args = [
-        'post_type'       => 'font',
-        'post_parent'     => 0,
-        'posts_per_page'  => -1, // [FIX]
-    ];
-
-    $query  = new WP_Query( $args ); 
-    $count  = 0;
-    if( $query->have_posts() )
-    {
-        $count  = count( $query->posts );
-    } 
-    return ceil( $count / 20 );
-
-}
 
 /**
  * Get the font that represents this font
  * If the font has a woff format, use that;
  * else use the representative font
  */
+/*
+No longer needed */
 function getRepFont( $id )
 {   
     $repFontStr    = get_post_meta( $id, 'repFont', TRUE ); //var_dump( $repFontStr );
@@ -260,6 +243,19 @@ function displayCheckout()
     $Order  = new FontsellerOrders; 
     $order  = organiseFonts( $_SESSION['cart'] ); 
     $Order->writeOrder( $order ); 
+
+    // Also need to know if this is Live or Test
+    $payPalStatus   = get_option( 'paypalStatus', TRUE ); 
+    if( 1 == $payPalStatus )
+    {
+        $ppUrl      = "https://www.paypal.com/cgi-bin/webscr";
+        $account    = get_option( 'liveAccount', TRUE );
+    }
+    else
+    {
+        $ppUrl      = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+        $account    = get_option( 'testAccount', TRUE );        
+    }
     
     include_once( FS_TEMPLATES . 'partials/display/checkout.php' );
 }

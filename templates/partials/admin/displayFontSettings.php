@@ -28,10 +28,17 @@
                 <tr>
                     <th scope="row"><label for="setRepFontSize">Representative Font Size</label></th>
                     <td>
-                        <input name="setRepFontSize" type="text" id="setsetRepFontSizeTitle" value="<?php echo isset( $repFontSize ) ? $repFontSize : ''; ?>" class="regular-text" />
+                        <input name="setRepFontSize" type="text" id="setRepFontSizeTitle" value="<?php echo isset( $repFontSize ) ? $repFontSize : ''; ?>" class="regular-text" />
                         <br />Note: this is the default font size
                     </td>
-                </tr>   
+                </tr>  
+                <tr>
+                    <th scope="row"><label for="setRepFontStr">Representative Font String</label></th>
+                    <td>
+                        <input name="setRepFontStr" type="text" id="setRepFontStr" value="<?php echo isset( $repFontStr ) ? $repFontStr : ''; ?>" class="regular-text" />
+                        <br />Note: this is the default font string
+                    </td>
+                </tr>                  
                 <tr>
                     <th scope="row"><label for="setFontFormatOffered">Font Formats Offered</label></th>
                     <td>
