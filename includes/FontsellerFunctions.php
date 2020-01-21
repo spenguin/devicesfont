@@ -366,6 +366,86 @@ function renderTransparentText( $font, $fontSize = 100, $text = "This is a test"
         //return $name;
 }
 
+/**
+ * Expanded Font file to Image rendering function
+ * @param str $fontFile - the actual Font File name with path
+ * @param str $text - the text to render
+ * @param int $size - font size 
+ * @param arr $color - font colour in RGB order
+ * @param arr $bgcolor - background colour in RGB order 
+ * @param bool $transparent - is the background transparent?
+ * @param int $wrapLength - the number of characters per row of the $text
+ * @param int/array $padding - padding parameter; if a single value, padding is applied to entire image; 
+ * otherwise, array in the order Top, Right, Bottom, Left
+ * @param int $rotate - rotational parameter
+ * @todo - expand padding
+ * @return img
+ */
+function fontToImage( $fontFile = '', $text = 'This is a test', $atts = [] )
+{   
+    if( !is_file(  $fontFile ) ) return 'Font file not found';
+
+    //$fontFile   = $fontDir . $font;
+    
+    $size     = 20;
+    $color    = array('red'=>0,'grn'=>0,'blu'=>0);
+    $bgcolor  = array('red'=>255,'grn'=>255,'blu'=>255);
+    $transparent  = TRUE;
+    $wrapLength   = 40;
+    $padding  = 2;  //[FIX] - need to provide array method
+    $rotate   = 0;
+
+    extract( $atts, EXTR_OVERWRITE );
+
+    $text       = wordwrap( $text, $wrapLength, "\n", TRUE ); 
+
+    // get the font height.
+    $tmp        = ImageTTFBBox($size, $rotate, $fontFile, "W");
+    $font_height= abs( $tmp[7] - $tmp[1] );
+
+    // Determine bounding box.
+    $bounds = ImageTTFBBox($size, $rotate, $fontFile, $text);
+    if ($rotate < 0)
+    {   $width = abs($bounds[4]-$bounds[0]);                    
+        $height = abs($bounds[3]-$bounds[7]);
+        $offset_y = $font_height;                               
+        $offset_x = 0;
+    } 
+    elseif ($rotate > 0) 
+    {  
+        $width = abs($bounds[2]-$bounds[6]);                    
+        $height = abs($bounds[1]-$bounds[5]);
+        $offset_y = abs($bounds[7]-$bounds[5])+$font_height;    
+        $offset_x = abs($bounds[0]-$bounds[6]);
+    } 
+    else
+    {                   
+        $width = abs($bounds[4]-$bounds[6]);                    
+        $height = abs($bounds[7]-$bounds[1]);
+        $offset_y = $font_height;                               
+        $offset_x = 0;
+    }
+
+    $image      = imagecreate( $width + ( $padding*2 ) + 1, $height + ( $padding*2 ) + 1 );
+    $background = ImageColorAllocate($image, $bgcolor['red'], $bgcolor['grn'], $bgcolor['blu']); 
+    $foreground = ImageColorAllocate($image, $color['red'], $color['grn'], $color['blu']); 
+    if ($transparent) ImageColorTransparent($image, $background);
+    
+    ImageInterlace($image, true); 
+  // render the image
+    ImageTTFText( $image, $size, $rotate, $offset_x+$padding, $offset_y+$padding, $foreground, $fontFile, $text ); 
+    imagealphablending($image, true); 
+    imagesavealpha($image, true); 
+
+  // output PNG object.
+
+    ob_start();
+          //header('Content-Type: image/png');
+        imagepng( $image, NULL, 0 );
+    return 'data:image/png;base64,'. base64_encode( ob_get_clean() );     
+
+}
+
 function setOptionsStr( $array, $selected=NULL )
 {   
     $o  = [];

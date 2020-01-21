@@ -12,17 +12,18 @@ add_action( 'fontseller_display_fontsets', 'fontseller_display_after_fontsets', 
 
 function fontseller_display_before_fontsets()
 {
+
     if( !isset( $_GET['pageNo'] ) || 1 == $_GET['pageNo'] )
     {
-        //add_action( 'fontlist_header', 'fontlist_bestsellers', 5, 2 );
-        //add_action( 'fontlist_header', 'fontlist_newfonts', 10, 2 );
+        add_action( 'fontlist_header', 'fontlist_bestsellers', 5, 2 );
+        add_action( 'fontlist_header', 'fontlist_newfonts', 10, 2 );
     }
     else
     {
         remove_action( 'fontlist_header', 'fontlist_bestsellers', 5 );
         remove_action( 'fontlist_header', 'fontlist_newfonts', 10 );    
     }
-    //do_action( 'fontlist_header' );
+    do_action( 'fontlist_header' );
 }
 
 function fontseller_display_fontsets()
@@ -152,6 +153,7 @@ function get_font_display_array( $args )
             'repFont'   => getRepFontData( $id ),
             'standard'  => reset( getSetTerms( $id, 'standard' ) )
         ];
+
     endwhile; endif; wp_reset_postdata();
 
     return $o;

@@ -24,7 +24,7 @@ $fontAdj        = get_post_meta( $fontId, 'fontAdj', TRUE );
 </div>
 <form action="<?php echo site_url(); ?>/cart" method="post" class="font-buy-all_form">
     <input type="hidden" name="fontId" value="<?php echo join( ',', $fontIds ); ?>" />
-    <p class="variant-count">A <?php echo $standard; ?> font set with <?php echo $c = count( $fonts ); ?> variant<?php echo ( 1 == $c ) ? '' : 's'; ?> | &pound;<?php echo number_format( $prices[strtolower( $standard )] * $c, 2);?>
+    <p class="variant-count">A <?php //echo $standard; ?> font set with <?php echo $c = count( $fonts ); ?> variant<?php echo ( 1 == $c ) ? '' : 's'; ?> | &pound;<?php echo number_format( $prices[strtolower( $standard )] * $c, 2);?>
     <span class="font_buy"><input type="submit" class="button button-primary" name="addToCart" value="Add Font Set to Cart"></p>
 </form>
 <div class="font-child-list">

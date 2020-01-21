@@ -211,6 +211,8 @@ class FontsellerUpload {
     function guessFamilyName( $file )
     {
         // Get meta data from file
+
+        
         if( FALSE !== strpos( $file, '-' ) )    // If there's a - in the file name, assume the first part is the font family name
         {
             $title  = explode( '-', $file );
